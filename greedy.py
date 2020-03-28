@@ -31,34 +31,43 @@ def initialize_M(s,n,t):
   print("Initial forbenius")
   print(LA.norm(np.dot(np.transpose(M),M)-I))
   no_changes=0
+  iter=10;
   cnt=0
-  while(cnt<n*t):
-    i=int(cnt/n)
-    j=int(cnt%n)
-    # print(cnt)
-    val1=LA.norm(np.dot(np.transpose(M),M)-I)
-    # print(val1)
-    if(M[i][j]==0):
-      M[i][j]=1
-      val2=LA.norm(np.dot(np.transpose(M),M)-I)
-      if(val2<val1):
-        # no_changes=0
-        cnt+=1
+  for i in range(iter):
+    cnt=0;
+    fl=1
+    print(LA.norm(np.dot(np.transpose(M),M)-I))
+    while(cnt<n*t):
+      i=int(cnt/n)
+      j=int(cnt%n)
+      # print(cnt)
+      val1=LA.norm(np.dot(np.transpose(M),M)-I)
+      # print(val1)
+      if(M[i][j]==0):
+        M[i][j]=1
+        val2=LA.norm(np.dot(np.transpose(M),M)-I)
+        if(val2<val1):
+          fl=0
+          # no_changes=0
+          cnt+=1
+        else:
+          M[i][j]=0
+          # no_changes+=1
+          cnt+=1
+        # print(val2)
       else:
         M[i][j]=0
-        # no_changes+=1
-        cnt+=1
-      # print(val2)
-    else:
-      M[i][j]=0
-      val2=LA.norm(np.dot(np.transpose(M),M)-I)
-      if(val2<val1):
-        # no_changes=0
-        cnt+=1
-      else:
-        M[i][j]=1
-        no_changes+=1
-        cnt+=1
+        val2=LA.norm(np.dot(np.transpose(M),M)-I)
+        if(val2<val1):
+          fl=0
+          # no_changes=0
+          cnt+=1
+        else:
+          M[i][j]=1
+          no_changes+=1
+          cnt+=1
+    if(fl == 1):
+      break
       # print(val2)
   print("required matrix")    
   print(M)
@@ -80,7 +89,7 @@ def initialize_M(s,n,t):
 if __name__ == '__main__':
   # matrix width is t*n
   # Test width. Max number of parallel tests available.
-  t = 20
+  t = 30
 
   # Infection probability
   p = 0.001
@@ -89,7 +98,7 @@ if __name__ == '__main__':
   q = 0.
 
   # Group size
-  n = 1000
+  n = 100
 
   # Number of infections
   d = 300
