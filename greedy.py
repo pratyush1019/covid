@@ -33,8 +33,8 @@ def initialize_M(s,n,t):
   no_changes=0
   cnt=0
   while(cnt<n*t):
-    i=cnt/n
-    j=cnt%n
+    i=int(cnt/n)
+    j=int(cnt%n)
     # print(cnt)
     val1=LA.norm(np.dot(np.transpose(M),M)-I)
     # print(val1)
@@ -89,10 +89,10 @@ if __name__ == '__main__':
   q = 0.
 
   # Group size
-  n = 100
+  n = 1000
 
   # Number of infections
-  d = 20
+  d = 300
 
   # Test assignment probability. Probability that a person gets assigned to a
   # test
