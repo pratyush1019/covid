@@ -18,7 +18,11 @@ def create_infection_array_with_num_cases(n, d):
   assert sum(arr) == d
   return arr
 
-
+def normalised(M):
+  x=LA.norm(M, ord=2, axis=0)
+  x[x==0]=1
+  return x
+  # print(x)
 
 # Test matrix
 def initialize_M(s,n,t):
@@ -28,24 +32,32 @@ def initialize_M(s,n,t):
   # print(M)
   # print(M.shape)
   # print(np.dot(np.transpose(M),M))
-  print("Initial forbenius")
-  print(LA.norm(np.dot(np.transpose(M),M)-I))
+  # normalised(M)
+  print("initial matrix")    
+  print(M)
+  print("initial forbenius")
+  print(LA.norm(np.dot(np.transpose(M/normalised(M)),M/normalised(M))-I))
   no_changes=0
   iter=10;
+  j=0
   cnt=0
   for i in range(iter):
+    j+=1
+    print(j)
+    print(LA.norm(np.dot(np.transpose(M/normalised(M)),M/normalised(M))-I))
     cnt=0;
     fl=1
-    print(LA.norm(np.dot(np.transpose(M),M)-I))
+    # N=M/normalised(M)
+    # print(LA.norm(np.dot(np.transpose(N),N)-I))
     while(cnt<n*t):
       i=int(cnt/n)
       j=int(cnt%n)
       # print(cnt)
-      val1=LA.norm(np.dot(np.transpose(M),M)-I)
+      val1=LA.norm(np.dot(np.transpose(M/normalised(M)),M/normalised(M))-I)
       # print(val1)
       if(M[i][j]==0):
         M[i][j]=1
-        val2=LA.norm(np.dot(np.transpose(M),M)-I)
+        val2=LA.norm(np.dot(np.transpose(M/normalised(M)),M/normalised(M))-I)
         if(val2<val1):
           fl=0
           # no_changes=0
@@ -57,7 +69,7 @@ def initialize_M(s,n,t):
         # print(val2)
       else:
         M[i][j]=0
-        val2=LA.norm(np.dot(np.transpose(M),M)-I)
+        val2=LA.norm(np.dot(np.transpose(M/normalised(M)),M/normalised(M))-I)
         if(val2<val1):
           fl=0
           # no_changes=0
@@ -72,7 +84,10 @@ def initialize_M(s,n,t):
   print("required matrix")    
   print(M)
   print("forbenius")
-  print(LA.norm(np.dot(np.transpose(M),M)-I))
+  print(LA.norm(np.dot(np.transpose(M/normalised(M)),M/normalised(M))-I))
+
+  print("below should look like I")
+  print(np.dot(np.transpose(M/normalised(M)),M/normalised(M)))
 
     #for person in range(n):
     #  while sum(self.M[person]) == 0:
@@ -89,7 +104,7 @@ def initialize_M(s,n,t):
 if __name__ == '__main__':
   # matrix width is t*n
   # Test width. Max number of parallel tests available.
-  t = 30
+  t = 20
 
   # Infection probability
   p = 0.001
@@ -105,7 +120,7 @@ if __name__ == '__main__':
 
   # Test assignment probability. Probability that a person gets assigned to a
   # test
-  s = 1. / 10
+  s = 5. / 10
   initialize_M(s,n,t)
 
  
